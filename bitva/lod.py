@@ -34,6 +34,10 @@ class Lod:
             zprava = f'{self._jmeno} odrazila utok stity. '
         self.nastav_zpravu (zprava)
 
+    def je_operacni(self):
+        return self._trup > 0
+        
+
     def nastav_zpravu(self, zprava):
         self._zprava = zprava
     
