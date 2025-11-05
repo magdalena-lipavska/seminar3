@@ -7,24 +7,29 @@ class Sektor:
     '''
     Sprava souboje
     '''
-    def __init__(self, lod_1, lod_2, kostka):
+    def __init__(self, jmeno, lod_1, lod_2, kostka):
+        self._jmeno = jmeno
         self._lod_1 = lod_1
         self._lod_2 = lod2
         self._kostka = kostka
 
     def _vypis_lod(self, lod):
         print(lod)
-        print(f'trup: {lod._trup}')
+        print(f'trup: {lod.graficky_trup(lod._trup, lod._max_trup)}')
 
     
+
     def souboj(self):
         import random
-        print('Vitej v sektoru Orion!')
-        print('======================')
+        print(f'Vitej v sektoru {self._jmeno}!')
+        print(f'================={len(self._jmeno)*"="}')
         print()
         print(f'Dnes se stretnou {self._lod_1} a {self._lod_2}.')
         print('Zahajit souboj...')
         input()
+
+        if random.randint(0, 1):
+            self._lod_1, self._lod_2 = self._lod_2, self._lod_1
 
         while self._lod_1.je_operacni() and self._lod_2.je_operacni():
             self._lod_1.utoc(self._lod_2)
@@ -33,12 +38,12 @@ class Sektor:
             self._vypis_zpravu(self._lod_2.vypis_zpravu())
             self._vypis_lod(self._lod_2)
 
-        if self._lod_2.je_operacni():
-            self._lod_2.utoc(self._lod_1)
-            self._vykresli()
-            self._vypis_zpravu(self._lod_2.vypis_zpravu())
-            self._vypis_zpravu(self._lod_1.vypis_zpravu())
-            self._vypis_lod(self._lod_1)
+            if self._lod_2.je_operacni():
+                self._lod_2.utoc(self._lod_1)
+                self._vykresli()
+                self._vypis_zpravu(self._lod_2.vypis_zpravu())
+                self._vypis_zpravu(self._lod_1.vypis_zpravu())
+                self._vypis_lod(self._lod_1)
 
 
     def _vypis_zpravu(self, zprava):
@@ -46,7 +51,6 @@ class Sektor:
         if zprava:
             print(zprava)
             _time.sleep(0.5)
-        print(zprava)
     
     def _vycisti(self):
         import sys as _sys
@@ -58,7 +62,7 @@ class Sektor:
         
     def _vykresli(self):
             self._vycisti()
-            print('========= Sektor Orion =============')
+            print(f'========= Sektor {self._jmeno} =============')
             print('Lode: \n')
             self._vypis_lod(self._lod_1)
             self._vypis_lod(self._lod_2)
@@ -68,9 +72,11 @@ class Sektor:
 
 
 if __name__ == '__main__':
-    k = Kostka(10)
+    k = Kostka(30)
+
     lod1 = Lod('Ajax', 100, 20, 18, k)
     lod2 = Lod('Barakuda', 100, 15, 22, k)
-
-    orion = Sektor(lod1, lod2, k)
+    orion = Sektor("Orion", lod1, lod2, k)
+    m = Sektor("Muchomurka", lod1, lod2, k)
     orion.souboj()
+    m.souboj()
